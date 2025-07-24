@@ -11,7 +11,7 @@ class LibraryManager
     {
         while (true)
         {
-            Console.Write("Would you like to add, remove, display, search, borrow or return a book? (add/remove/search/borrow/return/exit): ");
+            Console.Write("Would you like to add, remove, search, borrow or return a book? (add/remove/search/borrow/return/exit): ");
             string? action = Console.ReadLine()?.ToLower();
 
             switch (action)
@@ -21,9 +21,6 @@ class LibraryManager
                     break;
                 case "remove":
                     RemoveBook();
-                    break;
-                case "display":
-                    DisplayBooks();
                     break;
                 case "search":
                     SearchBook();
@@ -104,9 +101,10 @@ class LibraryManager
         }
         else
         {
+            int count = 1;
             foreach (var book in books)
             {
-                Console.WriteLine(book);
+                Console.WriteLine($"{count++}. {book.Key}");
             }
         }
     }
@@ -182,6 +180,19 @@ class LibraryManager
     /// </summary>
     private static void ReturnBook()
     {
+        if(BooksBorrowed == 0) // Check if there are any books to return
+        {
+            Console.WriteLine("You have no books to return.");
+            return;
+        }
+
+        if (books.Count == 0) // Check if there are any books in the library
+        {
+            Console.WriteLine("No books available in the library.");
+            return;
+        }
+
+
         Console.Write("Enter the title of the book to return: ");
         string? returnBook = Console.ReadLine();
 
@@ -204,10 +215,6 @@ class LibraryManager
         else if(books[returnBook]) // Check if the book was not borrowed
         {
             Console.WriteLine($"Book '{returnBook}' was not borrowed.");
-        }
-        else // If the user tries to return a book they haven't borrowed
-        {
-            Console.WriteLine("You have no books to return.");
         }
     }
 
